@@ -34,7 +34,7 @@ while 1:
     while receive != '06':
         data = bytearray(input('Input string: '), 'utf-8')
         crc = crc8(databytes=data)
-        transmit = data + crc
+        transmit = data
         ser.write(transmit)
         print(f'transmitted data: {transmit}')
         receive = ser.read(1).hex()
