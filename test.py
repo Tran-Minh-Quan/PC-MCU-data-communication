@@ -26,15 +26,19 @@ def crc8(databytes, generator=285):
     return bytearray([crc])
 
 
-ser = serial.Serial('COM3', baudrate=1000000, bytesize=serial.EIGHTBITS, timeout=0.004)
+ser = serial.Serial('COM3', baudrate=1000000, bytesize=serial.EIGHTBITS)
 i = 0
 wait(2)
 while 1:
     receive = None
     while receive != '06':
         data = bytearray(input('Input string: '), 'utf-8')
-        crc = crc8(databytes=data)
-        transmit = data + crc
+        len_data = bytearray([len(data)])
+        print(len_data)
+        crc = crc8(databytes=len_data + data)
+        transmit = len_data + data + crc
+        ser.timeout = 0.00002 * len(transmit) + 0.001
+        print(f'time out: {ser.timeout}')
         ser.write(transmit)
         print(f'transmitted data: {transmit}')
         receive = ser.read(1).hex()
