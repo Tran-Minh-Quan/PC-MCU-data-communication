@@ -2,10 +2,9 @@ import serial
 from time import sleep as wait
 from time import time
 import numpy as np
-
+import cv2
 
 def crc8_1byte(databyte, generator=285):
-    #   Bỏ bit đầu của đa thức sinh
     generator -= 256
     crc = databyte
     for bit in range(7, -1, -1):
@@ -27,8 +26,7 @@ def crc8(databytes, generator=285):
     return bytearray([crc])
 
 
-
-ser = serial.Serial('COM3', baudrate=921600, bytesize=serial.EIGHTBITS, timeout=2)
+ser = serial.Serial('COM3', baudrate=1000000, bytesize=serial.EIGHTBITS, timeout=0.004)
 i = 0
 wait(2)
 while 1:
