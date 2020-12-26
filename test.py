@@ -62,6 +62,8 @@ while 1:
         #     print(f'Received data: {receive}, status: {status}')
     send_counter += 1
     percent_error = error_counter * 100 // send_counter
-    print(f'Percent_error: {percent_error}')
+    print(f'Number of send data: {send_counter}')
+    print(f'Number of error data: {error_counter}')
+    print(f'Percent_error: {percent_error}%')
 
     # buffer = np.random.randint(9, size=10).astype(np.uint8)
