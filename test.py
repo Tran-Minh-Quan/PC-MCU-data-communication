@@ -27,7 +27,7 @@ def crc8(databytes, generator=285):
     return bytearray([crc])
 
 
-ser = serial.Serial('COM1', baudrate=1000000, bytesize=serial.EIGHTBITS)
+ser = serial.Serial('COM16', baudrate=1000000, bytesize=serial.EIGHTBITS)
 i = 0
 wait(2)
 receive = ''
@@ -38,7 +38,7 @@ while 1:
         # data = bytearray(input('Input string: '), 'utf-8')
         data = bytearray(randint(256, size=randint(10, 256)))
     else:
-        data = bytearray([1])
+        data = bytearray(1)
     len_data = bytearray(len(data))
     crc = crc8(databytes=len_data + data)
     transmit = len_data + data + crc
