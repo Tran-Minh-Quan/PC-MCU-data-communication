@@ -27,7 +27,7 @@ def crc8(databytes, generator=285):
     return bytearray([crc])
 
 
-ser = serial.Serial('COM16', baudrate=1000000, bytesize=serial.EIGHTBITS)
+ser = serial.Serial('COM19', baudrate=1000000, bytesize=serial.EIGHTBITS)
 i = 0
 wait(2)
 receive = ''
@@ -38,13 +38,15 @@ num_timeout_error = 0
 while 1:
     if send_counter:
         # data = bytearray(input('Input string: '), 'utf-8')
-        data = bytearray(randint(256, size=randint(10, 256)))
+        data = np.random.bytes(200)
     else:
         data = bytearray(1)
-    len_data = bytearray(len(data))
-    crc = crc8(databytes=len_data + data)
-    transmit = len_data + data + crc
-    ser.timeout = 0.00002 * len(transmit) + 0.001
+    print(data)
+    len_data =len(data)
+    len_data_error = len_data
+    crc = crc8(databytes=len_data.to_bytes(1, 'little') + data)
+    transmit = len_data_error.to_bytes(1, 'little') + data + crc
+    ser.timeout = 0.00002 * len(transmit) + 5
     ser.write(transmit)
     receive = ser.read(1).hex()
     status = bool(receive == str(0) + str(6))
@@ -54,9 +56,9 @@ while 1:
         elif receive == '31':
             num_timeout_error += 1
         error_counter += 1
-    # if send_counter:
+    if send_counter:
     #     print(f'Transmitted data: {transmit}')
-    #     print(f'Received data: {receive}, status: {status}')
+        print(f'Received data: {receive}, status: {status}')
     while receive != '06':
         ser.write(transmit)
         receive = ser.read(1).hex()
@@ -67,15 +69,17 @@ while 1:
             elif receive == '31':
                 num_timeout_error += 1
             error_counter += 1
-        # if send_counter:
-        #     print(f'Transmitted data: {transmit}')
-        #     print(f'Received data: {receive}, status: {status}')
+        # print("HI")
+        if send_counter:
+            # print(f'Transmitted data: {transmit}')
+            print(f'Received data: {receive}, status: {status}')
+        wait(0.002)
     send_counter += 1
     percent_error = error_counter * 100 // send_counter
     print(f'Number of crc error: {num_crc_error}')
     print(f'Number of timeout error: {num_timeout_error}')
-    print(f'Number of send data: {send_counter}')
-    print(f'Number of error data: {error_counter}')
+    # print(f'Number of send data: {send_counter}')
+    # print(f'Number of error data: {error_counter}')
     print(f'Percent_error: {percent_error}%')
-
+    wait(0.002)
     # buffer = np.random.randint(9, size=10).astype(np.uint8)
