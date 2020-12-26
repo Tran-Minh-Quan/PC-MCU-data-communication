@@ -43,6 +43,7 @@ while 1:
     while receive != '06':
         ser.write(transmit)
         print(f'Transmitted data: {transmit}')
-        wait(0.5)
+        receive = ser.read(1).hex()
+        print(f'Received data: {receive}, status: {receive == str(0) + str(6)}')
 
     # buffer = np.random.randint(9, size=10).astype(np.uint8)
