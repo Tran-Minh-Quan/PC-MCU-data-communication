@@ -73,7 +73,7 @@ while 1:
     send_counter += 1
     percent_error = error_counter * 100 // send_counter
     print(f'Number of crc error: {num_crc_error}')
-    print(f'Number of timeout: {num_timeout_error}')
+    print(f'Number of timeout error: {num_timeout_error}')
     print(f'Number of send data: {send_counter}')
     print(f'Number of error data: {error_counter}')
     print(f'Percent_error: {percent_error}%')
