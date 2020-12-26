@@ -39,7 +39,7 @@ while 1:
         data = bytearray(randint(256, size=randint(10, 256)))
     else:
         data = bytearray([1])
-    len_data = bytearray([len(data)])
+    len_data = bytearray(len(data))
     crc = crc8(databytes=len_data + data)
     transmit = len_data + data + crc
     ser.timeout = 0.00002 * len(transmit) + 0.001
