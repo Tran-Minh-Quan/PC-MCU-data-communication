@@ -33,6 +33,8 @@ wait(2)
 receive = ''
 send_counter = 0
 error_counter = 0
+num_crc_error = 0
+num_timeout_error = 0
 while 1:
     if send_counter:
         # data = bytearray(input('Input string: '), 'utf-8')
@@ -47,6 +49,10 @@ while 1:
     receive = ser.read(1).hex()
     status = bool(receive == str(0) + str(6))
     if status == False:
+        if receive == '30':
+            num_crc_error += 1
+        elif receive == '31':
+            num_timeout_error += 1
         error_counter += 1
     # if send_counter:
     #     print(f'Transmitted data: {transmit}')
@@ -56,6 +62,10 @@ while 1:
         receive = ser.read(1).hex()
         status = bool(receive == str(0) + str(6))
         if status == False:
+            if receive == '30':
+                num_crc_error += 1
+            elif receive == '31':
+                num_timeout_error += 1
             error_counter += 1
         # if send_counter:
         #     print(f'Transmitted data: {transmit}')
