@@ -32,7 +32,10 @@ wait(2)
 receive = ''
 counter = 0
 while 1:
-    data = bytearray(input('Input string: '), 'utf-8')
+    if counter:
+        data = bytearray(input('Input string: '), 'utf-8')
+    else:
+        data = bytearray([1])
     len_data = bytearray([len(data)])
     crc = crc8(databytes=len_data + data)
     transmit = len_data + data + crc
