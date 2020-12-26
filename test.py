@@ -30,6 +30,7 @@ ser = serial.Serial('COM16', baudrate=1000000, bytesize=serial.EIGHTBITS)
 i = 0
 wait(2)
 receive = ''
+counter = 0
 while 1:
     data = bytearray(input('Input string: '), 'utf-8')
     len_data = bytearray([len(data)])
@@ -37,13 +38,16 @@ while 1:
     transmit = len_data + data + crc
     ser.timeout = 0.00002 * len(transmit) + 0.001
     ser.write(transmit)
-    print(f'Transmitted data: {transmit}')
     receive = ser.read(1).hex()
-    print(f'Received data: {receive}, status: {receive == str(0) + str(6)}')
+    if counter:
+        print(f'Transmitted data: {transmit}')
+        print(f'Received data: {receive}, status: {receive == str(0) + str(6)}')
     while receive != '06':
         ser.write(transmit)
-        print(f'Transmitted data: {transmit}')
         receive = ser.read(1).hex()
-        print(f'Received data: {receive}, status: {receive == str(0) + str(6)}')
+        if counter:
+            print(f'Transmitted data: {transmit}')
+            print(f'Received data: {receive}, status: {receive == str(0) + str(6)}')
+    counter += 1
 
     # buffer = np.random.randint(9, size=10).astype(np.uint8)
